@@ -1,0 +1,210 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+:root {
+    --primary-color: #99a98f;
+    --decent-color: #d6e8db;
+    --accent-color: #fff;
+    --secondary-color: rgb(9,189,9);
+    --font-family: 'Poppins', sans-seri;
+    --text-color: grey;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    border: none;
+    outline: none;
+    text-decoration: none;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+body{
+    background-color: #fff;
+    padding: 0 2%;
+}
+
+/*El header del menu*/
+
+.header {
+    padding: 1rem 0;
+}
+
+.header--menu {
+    display: flex;
+    justify-content: space-between;
+    color: var(--accent-color);
+    align-items: center;
+    gap: 20px;
+    
+}
+
+.burger--icon{
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-radius: 5px;
+
+}
+
+.search--box{
+    background: var(--decent-color);
+    border-radius: 10px;
+    flex: 1;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.search--box i{
+    color: var(--primary-color);
+}
+
+.search--box input{
+    background: transparent;
+    padding: 10px;
+    width: 80%;
+}
+
+.menu--icons{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.menu--icons i{
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: var(--decent-color);
+}
+
+.fa-cart-shopping{
+    background: transparent !important;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+.cart-icon{
+    position: relative;
+}
+
+.cart-icon span{
+    background: var(--secondary-color);
+    color: var(--accent-color);
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    font-size: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    position: absolute;
+    right: -5px;
+    top: -5px;
+}
+
+.fa-bowl-food{
+    background: transparent !important;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.cover{
+    background-image: url(/Proyecto-desarrollo-de-software/static/img/principal.jpg);
+    background-size: cover;
+    height: 25vh;
+    background-position: center;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.cover--overlay{
+    height: 100%;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+/*Seccion de encabezados*/
+
+.section-heading{
+    font-size: 18px;
+    text-transform: uppercase;
+    margin: 1rem 0 10px 0;
+    color: var(--text-color);
+}
+
+/*Lista de Productos del menu.*/
+
+.menu--list{
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.menu--item{
+    width: 114px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border: 2px solid var(--decent-color);
+    padding: 10px 13px;
+    border-radius: 10px;
+    color: var(--text-color);
+}
+.menu--item img{
+    width: 120%;
+    height: 100%;
+}
+
+.card--list{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.card{
+    width: 190px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 1rem;
+    border-radius: 10px;
+    background: var(--accent-color);
+    box-shadow: 0px 10px 15px -3px rgb(0,0,0, 0.1);
+    text-align: center;
+    color: var(--text-color);
+}
+
+.card img{
+    width: 100%;
+}
+
+.card--price{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.card--price price{
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.add-to-cart{
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.add-to-cart:hover{
+    color: var(--accent-color);
+    box-shadow: rgb(0 0 0 /30%) 0px 4px 4px,  rgb(231, 236, 236) 0px 0px 0px 3px;
+}
