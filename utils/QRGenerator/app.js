@@ -1,2 +1,2 @@
 const contenedorQR = document.getElementById('contenedorQR');
-new QRCode(contenedorQR, 'josue');
+new QRCode(contenedorQR, 'Mesa 4');
