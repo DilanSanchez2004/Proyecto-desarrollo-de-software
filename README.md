@@ -2,6 +2,14 @@
 
 “Nuestro proyecto es una aplicación web que permite a los clientes de un restaurante hacer pedidos escaneando un código QR en la mesa. Esto agiliza el proceso, reduce errores y permite dividir cuentas fácilmente, mientras que el restaurante puede gestionar pedidos en tiempo real.”
 
+## Configuración de base de datos
+
+La conexión usa variables de entorno (con valores por defecto):
+- `DB_HOST` (default: `localhost`)
+- `DB_PORT` (default: `5432`)
+- `DB_NAME` (default: `ProyectoDesarrollo`)
+- `DB_USER` (default: `postgres`)
+- `DB_PASSWORD` (default: `18abril3`)
 
 ## Base de datos del proyecto:
 

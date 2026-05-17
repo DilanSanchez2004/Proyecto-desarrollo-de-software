@@ -1,11 +1,10 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 :root {
     --primary-color: #99a98f;
     --decent-color: #d6e8db;
     --accent-color: #fff;
     --secondary-color: rgb(9,189,9);
-    --font-family: 'Poppins', sans-seri;
+    --font-family: 'Poppins', sans-serif;
     --text-color: grey;
 }
 
@@ -35,7 +34,6 @@ body{
     color: var(--accent-color);
     align-items: center;
     gap: 20px;
-    
 }
 
 .burger--icon{
@@ -43,7 +41,6 @@ body{
     background-color: var(--primary-color);
     color: var(--accent-color);
     border-radius: 5px;
-
 }
 
 .search--box{
@@ -100,6 +97,16 @@ body{
     position: absolute;
     right: -5px;
     top: -5px;
+}
+
+/* Animación bump al agregar al carrito */
+@keyframes bump {
+    0%   { transform: scale(1); }
+    50%  { transform: scale(1.4); }
+    100% { transform: scale(1); }
+}
+.cart-icon span.bump {
+    animation: bump 0.3s ease;
 }
 
 .fa-bowl-food{
@@ -207,7 +214,7 @@ body{
 
 .add-to-cart:hover{
     color: var(--accent-color);
-    box-shadow: rgb(0 0 0 /30%) 0px 4px 4px,  rgb(231, 236, 236) 0px 0px 0px 3px;
+    box-shadow: rgb(0 0 0 /30%) 0px 4px 4px, rgb(231, 236, 236) 0px 0px 0px 3px;
 }
 
 /*diseno del carrito de las compras.*/
@@ -238,24 +245,103 @@ body{
     cursor: pointer;
 }
 
-.cart-tems{
+.cart-items{
     display: flex;
     flex-direction: column;
     gap: 10px;
     margin-top: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
 }
 
-.cart-items{
+.cart-item{
+    margin-top: 6px;
+}
+
+.individual-cart-item{
+    width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    padding: 10px 5px;
-    border-radius: 5px;
-    color: var(--text-color);
+    gap: 6px;
     border: 1px solid var(--decent-color);
+    border-radius: 5px;
+    padding: 8px 10px;
+    flex-wrap: wrap;
 }
 
+.individual-cart-item .item-name{
+    color: var(--text-color);
+    font-size: 13px;
+    flex: 1;
+    min-width: 70px;
+}
+
+/* Controles de cantidad */
+.item-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.qty-btn {
+    background-color: var(--decent-color);
+    color: var(--text-color);
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.qty-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.item-qty {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-color);
+    min-width: 14px;
+    text-align: center;
+}
+
+/* Precio en el ítem */
 .cart-item-price{
     color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+/* Botón eliminar */
+.remove-btn {
+    background: transparent;
+    color: #e74c3c;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.remove-btn:hover {
+    background: #fdecea;
+}
+
+/* Carrito vacío */
+.empty-cart {
+    text-align: center;
+    color: var(--text-color);
+    font-size: 14px;
+    padding: 1rem 0;
 }
 
 .sidebar--footer{

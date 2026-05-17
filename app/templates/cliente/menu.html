@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/menu.css') }}"/>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+</head>
+
+<body>
+    <header class="header">
+        <nav class="header--menu">
+            <div class="burger--icon">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="search--box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="buscar">
+            </div>
+            <div class="menu--icons">
+                <i class="fa-solid fa-bowl-food"></i>
+                <div class="cart-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span>0</span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="cover">
+        <div class="cover--overlay">
+            <h1>Bocado Rápido</h1>
+            <span class="slogan">Donde el gusto toma la delantera</span>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- Filtro por categoría -->
+        <h2 class="section-heading">Menú</h2>
+        <div class="menu--list">
+            <a href="{{ url_for('producto.menu') }}"
+               class="menu--item {% if not categoria_activa %}menu--item--active{% endif %}">
+                <i class="fa-solid fa-utensils" style="font-size:1.8rem; margin-bottom:4px;"></i>
+                <h5>Todos</h5>
+            </a>
+            {% for cat in categorias %}
+            <a href="{{ url_for('producto.menu', categoria=cat.id_categoria) }}"
+               class="menu--item {% if categoria_activa == cat.id_categoria %}menu--item--active{% endif %}">
+                <h5>{{ cat.nombre }}</h5>
+            </a>
+            {% endfor %}
+        </div>
+
+        <!-- Título sección productos -->
+        <h2 class="section-heading">
+            {% if categoria_activa %}
+                {% for cat in categorias %}
+                    {% if cat.id_categoria == categoria_activa %}{{ cat.nombre }}{% endif %}
+                {% endfor %}
+            {% else %}
+                Todos los productos
+            {% endif %}
+        </h2>
+
+        <!-- Tarjetas de productos -->
+        <div class="card--list">
+            {% for producto in productos %}
+            <div class="card"
+                 data-id="{{ producto.id_producto }}"
+                 data-nombre="{{ producto.nombre }}"
+                 data-precio="{{ producto.precio }}">
+
+                <img src="{{ producto.imagen_url or url_for('static', filename='img/default.png') }}"
+                     alt="{{ producto.nombre }}">
+
+                <h4 class="card--title">{{ producto.nombre }}</h4>
+
+                {% if producto.descripcion %}
+                <p class="card--desc">{{ producto.descripcion }}</p>
+                {% endif %}
+
+                <div class="card--price">
+                    <div class="price">${{ '{:,.0f}'.format(producto.precio) }}</div>
+                    <i class="fa-solid fa-plus add-to-cart"></i>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% if not productos %}
+            <p style="color: grey; padding: 1rem 0;">
+                No hay productos disponibles.
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- Carrito lateral -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-close">
+                <i class="fa-solid fa-close"></i>
+            </div>
+            <div class="cart-menu">
+                <h3>Mi carrito</h3>
+                <div class="cart-items"></div>
+            </div>
+            <div class="sidebar--footer">
+                <div class="total--amount">
+                    <h5>Total</h5>
+                    <div class="cart-total">$0</div>
+                </div>
+                <button class="checkout-btn">Ordenar</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Datos de sesión para el JS -->
+    <script>
+        const SESION = {
+            id_mesa:         "{{ session.get('id_mesa', 1) }}",
+            id_cliente_mesa: "{{ session.get('id_cliente_mesa', 1) }}",
+            tipo_pedido:     "{{ session.get('tipo_pedido', 'mesa') }}"
+        };
+    </script>
+
+    <script src="{{ url_for('static', filename='js/carrito.js') }}"></script>
+</body>
+</html>
