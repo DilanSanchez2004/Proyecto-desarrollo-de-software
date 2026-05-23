@@ -20,7 +20,11 @@
                 <input type="text" placeholder="buscar">
             </div>
             <div class="menu--icons">
-                <i class="fa-solid fa-bowl-food"></i>
+                {% if mesa %}
+                <span class="mesa-badge">
+                    <i class="fa-solid fa-chair"></i> Mesa {{ mesa.numero_mesa }}
+                </span>
+                {% endif %}
                 <div class="cart-icon">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span>0</span>

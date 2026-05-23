@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, jsonify, session
 from app.services.producto_service import get_menu, registrar_pedido
+from app.services import mesa_service
 
 producto_bp = Blueprint("producto", __name__)
 
@@ -8,11 +9,13 @@ producto_bp = Blueprint("producto", __name__)
 def menu():
     id_categoria = request.args.get("categoria", type=int)
     categorias, productos = get_menu(id_categoria)
+    mesa = mesa_service.get_mesa_by_id(session.get("id_mesa")) if session.get("id_mesa") else None
     return render_template(
         "cliente/menu.html",
         categorias=categorias,
         productos=productos,
-        categoria_activa=id_categoria
+        categoria_activa=id_categoria,
+        mesa=mesa
     )
 
 
