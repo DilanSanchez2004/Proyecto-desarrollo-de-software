@@ -109,6 +109,19 @@ body{
     animation: bump 0.3s ease;
 }
 
+.mesa-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--decent-color);
+    color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .fa-bowl-food{
     background: transparent !important;
     border: 1px solid var(--primary-color);
