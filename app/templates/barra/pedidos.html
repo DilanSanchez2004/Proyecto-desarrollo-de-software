@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra - Pedidos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/barra.css') }}"/>
+</head>
+<body>
+
+    <nav class="barra-header container">
+        <div class="izquierda">
+            <ul>
+                <li><i class="fa-solid fa-martini-glass"></i> Barra Pedidos</li>
+            </ul>
+        </div>
+        <div class="derecha">
+            <ul>
+                <li><a href="{{ url_for('mesa.admin_mesas') }}"><i class="fa-solid fa-chair"></i> Admin Mesas</a></li>
+                <li><a href="{{ url_for('producto.menu') }}"><i class="fa-solid fa-utensils"></i> Menú</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="swiper mySwiper container">
+        <div class="swiper-wrapper">
+            {% if mesas %}
+                {% for mesa in mesas %}
+                <div class="swiper-slide" tabindex="0" data-id="{{ mesa.id_mesa }}">
+                    <div class="swiper-txt">
+                        <h3>
+                            Mesa {{ mesa.numero_mesa }}
+                            <small>&bull; #{{ mesa.id_mesa }}</small>
+                        </h3>
+                        <span class="mesa-estado estado-{{ mesa.estado }}">
+                            <i class="fa-solid {% if mesa.estado == 'libre' %}fa-circle-check{% elif mesa.estado == 'ocupada' %}fa-circle-xmark{% else %}fa-circle-dot{% endif %}"></i>
+                            {{ mesa.estado }}
+                        </span>
+                        <div class="pedidos-lista">
+                            {% set pedidos_mesa = pedidos_por_mesa.get(mesa.id_mesa, []) %}
+                            {% if pedidos_mesa %}
+                                {% for pedido in pedidos_mesa %}
+                                <div class="pedido-item" data-pedido-id="{{ pedido.id_pedido }}">
+                                    <div class="pedido-header">
+                                        <span class="pedido-num">#{{ pedido.id_pedido }}</span>
+                                        <span class="pedido-estado estado-{{ pedido.estado_pedido | replace(' ', '-') }}">{{ pedido.estado_pedido }}</span>
+                                    </div>
+                                    <div class="pedido-cliente">{{ pedido.cliente or 'Anónimo' }}</div>
+                                    <ul class="pedido-productos">
+                                    {% for item in pedido['items'] %}
+                                        <li><span class="item-cant">{{ item.cantidad }}x</span> {{ item.nombre }}</li>
+                                    {% endfor %}
+                                    </ul>
+                                    <button class="btn-entregar" data-pedido-id="{{ pedido.id_pedido }}">
+                                        <i class="fa-solid fa-check"></i> Entregado
+                                    </button>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="sin-pedidos">Sin pedidos pendientes</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <img src="{{ url_for('static', filename='img/barra/' ~ loop.cycle('1','2','3','4','5','6','7') ~ '.jpg') }}"
+                         alt="Mesa {{ mesa.numero_mesa }}">
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="swiper-slide" tabindex="0">
+                    <div class="swiper-txt">
+                        <h3>Sin mesas</h3>
+                        <p>No hay mesas registradas. Ve a Admin Mesas para agregar.</p>
+                    </div>
+                    <img src="{{ url_for('static', filename='img/barra/1.jpg') }}" alt="Sin mesas">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="desktop container">
+        <img src="{{ url_for('static', filename='img/barra/bg2.jpg') }}" alt="">
+    </div>
+
+    <div class="barra-actions">
+        <a href="{{ url_for('mesa.admin_mesas') }}" class="btn-back">
+            <i class="fa-solid fa-arrow-left"></i> Volver a Administración
+        </a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/barra.js') }}"></script>
+    <script>
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.btn-entregar');
+            if (!btn) return;
+
+            const idPedido = btn.dataset.pedidoId;
+            if (!confirm('¿Estás seguro de marcar el pedido #' + idPedido + ' como entregado?')) return;
+
+            fetch('/barra/pedido/' + idPedido + '/entregar', { method: 'POST' })
+                .then(function(r) { return r.json(); })
+                .then(function(data) {
+                    if (data.ok) {
+                        const item = btn.closest('.pedido-item');
+                        item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.9)';
+                        setTimeout(function() { item.remove(); }, 300);
+                    } else {
+                        alert('Error al entregar el pedido');
+                    }
+                })
+                .catch(function() {
+                    alert('Error de conexión');
+                });
+        });
+    </script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 from flask import Flask
 from app.controllers.producto_controller import producto_bp
 from app.controllers.mesa_controller import mesa_bp
+from app.controllers.barra_controller import barra_bp
 
 def create_app():
     app = Flask(__name__)
@@ -9,6 +10,7 @@ def create_app():
     # Registrar blueprints
     app.register_blueprint(producto_bp)
     app.register_blueprint(mesa_bp)
+    app.register_blueprint(barra_bp)
 
     @app.route('/')
     def index():
