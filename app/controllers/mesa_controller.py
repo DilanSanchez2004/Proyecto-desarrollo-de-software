@@ -49,8 +49,9 @@ def registrar_cliente(id_mesa):
         return redirect(url_for("mesa.welcome_mesa", id_mesa=id_mesa))
     
     try:
-        # Registrar en tabla clientes_mesa
+        # Registrar en tabla clientes_mesa y ocupar la mesa
         id_cliente_mesa = mesa_service.register_client_for_table(nombre_cliente.strip(), id_mesa)
+        mesa_service.ocupar_mesa(id_mesa)
         
         # Almacenar datos en sesión de Flask
         session["id_mesa"] = id_mesa
