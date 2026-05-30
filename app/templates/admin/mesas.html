@@ -478,9 +478,10 @@
                                 <div class="mesa-num">
                                     <i class="fa-solid fa-chair"></i> Mesa {{ mesa.numero_mesa }}
                                 </div>
-                                <span class="badge badge-{{ mesa.estado }}">
-                                    <i class="fa-solid {% if mesa.estado == 'libre' %}fa-circle-check{% elif mesa.estado == 'ocupada' %}fa-circle-xmark{% else %}fa-circle-dot{% endif %}"></i>
-                                    {{ mesa.estado }}
+                                {% set est = (mesa.estado or '') | trim | lower %}
+                                <span class="badge badge-{{ est }}">
+                                    <i class="fa-solid {% if est == 'libre' %}fa-circle-check{% elif est == 'ocupada' %}fa-circle-xmark{% else %}fa-circle-dot{% endif %}"></i>
+                                    {{ est }}
                                 </span>
                             </div>
                             
