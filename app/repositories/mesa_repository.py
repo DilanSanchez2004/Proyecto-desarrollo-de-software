@@ -34,6 +34,15 @@ def obtener_mesa_por_id(id_mesa):
             cur.execute("SELECT id_mesa, numero_mesa, estado FROM mesas WHERE id_mesa = %s", (id_mesa,))
             return cur.fetchone()
 
+def ocupar_mesa(id_mesa):
+    with get_connection() as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "UPDATE mesas SET estado = 'ocupada' WHERE id_mesa = %s",
+                (id_mesa,)
+            )
+        conn.commit()
+
 def registrar_cliente_mesa(nombre, id_mesa):
     """
     Registra un cliente asociado a una mesa y retorna el id_cliente_mesa generado.
