@@ -37,9 +37,10 @@
                             Mesa {{ mesa.numero_mesa }}
                             <small>&bull; #{{ mesa.id_mesa }}</small>
                         </h3>
-                        <span class="mesa-estado estado-{{ mesa.estado }}">
-                            <i class="fa-solid {% if mesa.estado == 'libre' %}fa-circle-check{% elif mesa.estado == 'ocupada' %}fa-circle-xmark{% else %}fa-circle-dot{% endif %}"></i>
-                            {{ mesa.estado }}
+                        {% set est = (mesa.estado or '') | trim | lower %}
+                        <span class="mesa-estado estado-{{ est }}">
+                            <i class="fa-solid {% if est == 'libre' %}fa-circle-check{% elif est == 'ocupada' %}fa-circle-xmark{% else %}fa-circle-dot{% endif %}"></i>
+                            {{ est }}
                         </span>
                         <div class="pedidos-lista">
                             {% set pedidos_mesa = pedidos_por_mesa.get(mesa.id_mesa, []) %}
