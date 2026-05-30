@@ -267,6 +267,40 @@ body {
     transform: translateY(0);
 }
 
+.btn-liberar-mesa {
+    margin-top: 12px;
+    width: 100%;
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: background 0.2s ease, transform 0.15s ease;
+    opacity: 0;
+    transition: opacity 0.4s ease, background 0.2s ease, transform 0.15s ease;
+}
+
+.swiper-slide.activo .btn-liberar-mesa {
+    opacity: 1;
+}
+
+.btn-liberar-mesa:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+.btn-liberar-mesa:active {
+    transform: translateY(0);
+}
+
 .sin-pedidos {
     font-size: 12px;
     color: var(--text-muted);
@@ -311,11 +345,11 @@ body {
     border-radius: 15px;
 }
 
-/* Barra de acciones inferior */
+/* Barra de acciones inferior
 .barra-actions {
     text-align: center;
     padding: 30px 0;
-}
+} */
 
 .btn-back {
     display: inline-flex;

@@ -15,5 +15,8 @@ def register_client_for_table(nombre, id_mesa):
 def ocupar_mesa(id_mesa):
     mesa_repository.ocupar_mesa(id_mesa)
 
+def liberar_mesa(id_mesa):
+    mesa_repository.liberar_mesa(id_mesa)
+
 def delete_mesa(id_mesa):
     return mesa_repository.eliminar_mesa(id_mesa)

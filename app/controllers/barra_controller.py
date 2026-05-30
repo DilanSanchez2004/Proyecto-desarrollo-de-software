@@ -16,3 +16,8 @@ def entregar(id_pedido):
     if ok:
         return jsonify({"ok": True})
     return jsonify({"error": "Pedido no encontrado"}), 404
+
+@barra_bp.route("/barra/mesa/<int:id_mesa>/liberar", methods=["POST"])
+def liberar_mesa(id_mesa):
+    mesa_service.liberar_mesa(id_mesa)
+    return jsonify({"ok": True})
