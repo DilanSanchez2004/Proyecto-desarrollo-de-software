@@ -65,6 +65,9 @@
                                 <p class="sin-pedidos">Sin pedidos pendientes</p>
                             {% endif %}
                         </div>
+                        <button class="btn-liberar-mesa" data-mesa-id="{{ mesa.id_mesa }}">
+                            <i class="fa-solid fa-door-open"></i> Marcar como Libre
+                        </button>
                     </div>
                     <img src="{{ url_for('static', filename='img/barra/' ~ loop.cycle('1','2','3','4','5','6','7') ~ '.jpg') }}"
                          alt="Mesa {{ mesa.numero_mesa }}">
@@ -86,16 +89,33 @@
         <img src="{{ url_for('static', filename='img/barra/bg2.jpg') }}" alt="">
     </div>
 
-    <div class="barra-actions">
+    <!-- <div class="barra-actions">
         <a href="{{ url_for('mesa.admin_mesas') }}" class="btn-back">
             <i class="fa-solid fa-arrow-left"></i> Volver a Administración
         </a>
-    </div>
+    </div> -->
 
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/barra.js') }}"></script>
     <script>
         document.addEventListener('click', function(e) {
+            const btnLiberar = e.target.closest('.btn-liberar-mesa');
+            if (btnLiberar) {
+                const idMesa = btnLiberar.dataset.mesaId;
+                if (!confirm('¿Estás seguro de marcar esta mesa como libre?')) return;
+                fetch('/barra/mesa/' + idMesa + '/liberar', { method: 'POST' })
+                    .then(function(r) { return r.json(); })
+                    .then(function(data) {
+                        if (data.ok) {
+                            location.reload();
+                        } else {
+                            alert('Error al liberar la mesa');
+                        }
+                    })
+                    .catch(function() { alert('Error de conexión'); });
+                return;
+            }
+
             const btn = e.target.closest('.btn-entregar');
             if (!btn) return;
 
