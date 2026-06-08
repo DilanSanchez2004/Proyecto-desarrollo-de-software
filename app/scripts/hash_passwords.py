@@ -11,7 +11,7 @@ def es_hash_existente(contrasena):
 def hash_passwords():
     with get_connection() as conn:
         with conn.cursor() as cur:
-            cur.execute("SELECT id_usuario, contrasena FROM usuarios")
+            cur.execute("SELECT id_usuario, contraseña FROM usuarios")
             usuarios = cur.fetchall()
 
         actualizados = 0
@@ -19,7 +19,7 @@ def hash_passwords():
             if not es_hash_existente(contrasena):
                 nuevo_hash = generate_password_hash(contrasena)
                 cur.execute(
-                    "UPDATE usuarios SET contrasena = %s WHERE id_usuario = %s",
+                    "UPDATE usuarios SET contraseña = %s WHERE id_usuario = %s",
                     (nuevo_hash, id_usuario)
                 )
                 actualizados += 1

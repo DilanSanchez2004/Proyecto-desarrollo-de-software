@@ -7,8 +7,8 @@ def contar_mesas():
             cur.execute("""
                 SELECT
                     COUNT(*) AS total,
-                    COALESCE(SUM(CASE WHEN estado = 'libre' THEN 1 ELSE 0 END), 0) AS libres,
-                    COALESCE(SUM(CASE WHEN estado = 'ocupada' THEN 1 ELSE 0 END), 0) AS ocupadas
+                    COALESCE(SUM(CASE WHEN LOWER(estado) = 'libre' THEN 1 ELSE 0 END), 0) AS libres,
+                    COALESCE(SUM(CASE WHEN LOWER(estado) = 'ocupada' THEN 1 ELSE 0 END), 0) AS ocupadas
                 FROM mesas
             """)
             return cur.fetchone()
@@ -45,7 +45,7 @@ def contar_usuarios():
                 SELECT COUNT(*) AS total
                 FROM usuarios u
                 JOIN roles r ON u.id_rol = r.id_rol
-                WHERE r.nombre = 'admin'
+                WHERE UPPER(r.nombre) = 'ADMINISTRADOR'
             """)
             return cur.fetchone()
 

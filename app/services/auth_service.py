@@ -5,9 +5,9 @@ def autenticar_admin(correo, contrasena):
     usuario = obtener_usuario_por_correo(correo)
     if not usuario:
         return None
-    if not check_password_hash(usuario["contrasena"], contrasena):
+    if not check_password_hash(usuario["contraseña"], contrasena):
         return None
-    if usuario["rol_nombre"] != "admin":
+    if usuario["rol_nombre"].upper() != "ADMINISTRADOR":
         return None
     return dict(usuario)
 

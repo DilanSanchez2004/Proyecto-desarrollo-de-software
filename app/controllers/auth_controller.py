@@ -8,7 +8,7 @@ auth_bp = Blueprint("auth", __name__)
 def admin_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
-        if "id_usuario" not in session or session.get("rol") != "admin":
+        if "id_usuario" not in session or session.get("rol") != "ADMINISTRADOR":
             flash("Debes iniciar sesión como administrador", "danger")
             return redirect(url_for("auth.login"))
         return f(*args, **kwargs)
