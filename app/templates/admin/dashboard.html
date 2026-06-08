@@ -290,6 +290,7 @@
                 <a href="{{ url_for('mesa.admin_mesas') }}" class="nav-link">Mesas</a>
                 <a href="{{ url_for('producto.admin_productos') }}" class="nav-link">Productos</a>
                 <a href="{{ url_for('usuario.admin_usuarios') }}" class="nav-link">Usuarios</a>
+                <a href="{{ url_for('factura.admin_facturas') }}" class="nav-link">Facturas</a>
                 <a href="/barra/pedidos" class="nav-link">Barra</a>
                 {% if session.get('nombre_usuario') %}
                 <span style="color: var(--text-muted); font-size: 0.85rem;">
@@ -331,15 +332,6 @@
             </div>
 
             <div class="stat-card">
-                <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-fire"></i></div>
-                <div class="stat-info">
-                    <div class="stat-label">En Preparación</div>
-                    <div class="stat-number">{{ resumen.pedidos_hoy.en_preparacion }}</div>
-                    <div class="stat-sub">Hoy</div>
-                </div>
-            </div>
-
-            <div class="stat-card">
                 <div class="stat-icon stat-icon-teal"><i class="fa-solid fa-check"></i></div>
                 <div class="stat-info">
                     <div class="stat-label">Entregados Hoy</div>
@@ -375,6 +367,17 @@
                 <div class="stat-info">
                     <div class="stat-label">Administradores</div>
                     <div class="stat-number">{{ resumen.usuarios.total }}</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-file-invoice"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Facturas Hoy</div>
+                    <div class="stat-number">{{ resumen.facturas_hoy.total }}</div>
+                    <div class="stat-sub">
+                        Ingresos: <strong>${{ '{:,.0f}'.format(resumen.facturas_hoy.total_ingresos) }}</strong>
+                    </div>
                 </div>
             </div>
         </div>
@@ -446,6 +449,13 @@
                         <div class="quick-link-info">
                             <h4>Gestionar Usuarios</h4>
                             <p>Administrar acceso al panel</p>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('factura.admin_facturas') }}" class="quick-link">
+                        <div class="quick-link-icon stat-icon-blue"><i class="fa-solid fa-file-invoice"></i></div>
+                        <div class="quick-link-info">
+                            <h4>Facturas</h4>
+                            <p>Ver e imprimir facturas generadas</p>
                         </div>
                     </a>
                     <a href="/menu" class="quick-link">

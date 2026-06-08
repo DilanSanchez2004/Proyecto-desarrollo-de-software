@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facturas - Bocado Rápido Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #99a98f;
+            --primary-light: #d6e8db;
+            --bg: #f5f7f5;
+            --card-bg: #ffffff;
+            --text: #444;
+            --text-muted: #888;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --font: 'Poppins', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+        .nav-links { display: flex; gap: 1.5rem; align-items: center; }
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            font-size: 0.95rem;
+        }
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            flex: 1;
+        }
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .panel-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            color: #333;
+        }
+        .facturas-table { width: 100%; border-collapse: collapse; }
+        .facturas-table th {
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+        .facturas-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+        .facturas-table tr:hover { background-color: #fafcfa; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+            text-decoration: none;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(153, 169, 143, 0.3);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+        .btn-outline:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            box-shadow: none;
+        }
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 4rem 0;
+        }
+        .empty-state i { font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.5; }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 0.7rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background-color: var(--primary-light);
+            color: var(--primary);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="{{ url_for('dashboard.admin_dashboard') }}" class="logo">
+                <i class="fa-solid fa-utensils"></i> Bocado Rápido Admin
+            </a>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard.admin_dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('mesa.admin_mesas') }}" class="nav-link">Mesas</a>
+                <a href="{{ url_for('producto.admin_productos') }}" class="nav-link">Productos</a>
+                <a href="{{ url_for('usuario.admin_usuarios') }}" class="nav-link">Usuarios</a>
+                <a href="{{ url_for('factura.admin_facturas') }}" class="nav-link active">Facturas</a>
+                <a href="/barra/pedidos" class="nav-link">Barra</a>
+                {% if session.get('nombre_usuario') %}
+                <span style="color: var(--text-muted); font-size: 0.85rem;">
+                    <i class="fa-solid fa-user"></i> {{ session['nombre_usuario'] }}
+                </span>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link" style="color: var(--danger);">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">
+            <i class="fa-solid fa-file-invoice" style="color: var(--primary);"></i> Facturas
+        </h1>
+
+        <div class="panel">
+            {% if facturas %}
+            <div style="overflow-x: auto;">
+                <table class="facturas-table">
+                    <thead>
+                        <tr>
+                            <th># Factura</th>
+                            <th>Mesa</th>
+                            <th>Cliente</th>
+                            <th>Fecha</th>
+                            <th>Total</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for f in facturas %}
+                        <tr>
+                            <td><strong>{{ f.id_factura }}</strong></td>
+                            <td>Mesa {{ f.numero_mesa }}</td>
+                            <td>{{ f.nombre_cliente }}</td>
+                            <td>{{ f.fecha_emision.strftime('%d/%m/%Y %H:%M') if f.fecha_emision else '' }}</td>
+                            <td><strong>${{ '{:,.0f}'.format(f.total) }}</strong></td>
+                            <td>
+                                <a href="{{ url_for('factura.imprimir_factura', id_factura=f.id_factura) }}" target="_blank" class="btn">
+                                    <i class="fa-solid fa-print"></i> Imprimir
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa-solid fa-file-invoice"></i>
+                <p style="font-size: 1.1rem; font-weight: 500;">No hay facturas</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Las facturas se generan automáticamente al liberar una mesa en la barra.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

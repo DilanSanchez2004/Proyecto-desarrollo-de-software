@@ -117,6 +117,12 @@
                     .then(function(r) { return r.json(); })
                     .then(function(data) {
                         if (data.ok) {
+                            if (data.id_factura) {
+                                const imprimir = confirm('Factura #' + data.id_factura + ' generada. ¿Deseas imprimirla?');
+                                if (imprimir) {
+                                    window.open('/factura/' + data.id_factura + '/imprimir', '_blank');
+                                }
+                            }
                             location.reload();
                         } else {
                             alert('Error al liberar la mesa');

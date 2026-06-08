@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura #{{ factura.id_factura }} - Bocado Rápido</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f5f7f5;
+            display: flex;
+            justify-content: center;
+            padding: 2rem 1rem;
+            color: #333;
+        }
+        .factura-container {
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 2rem 1.75rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px dashed #d6e8db;
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #99a98f;
+            letter-spacing: -0.03em;
+        }
+        .header .slogan {
+            font-size: 0.75rem;
+            color: #888;
+            font-weight: 400;
+        }
+        .factura-num {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .factura-num h2 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #555;
+        }
+        .factura-num span {
+            font-size: 0.75rem;
+            color: #888;
+        }
+        .info-grid {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+            font-size: 0.8rem;
+            color: #555;
+            background: #f5f7f5;
+            padding: 0.75rem 1rem;
+            border-radius: 12px;
+        }
+        .info-grid .label { font-weight: 600; color: #888; text-transform: uppercase; font-size: 0.65rem; letter-spacing: 0.05em; }
+        .info-grid .value { font-weight: 600; color: #333; }
+        .items-table { width: 100%; border-collapse: collapse; margin-bottom: 1.25rem; }
+        .items-table th {
+            text-align: left;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.5rem 0.5rem 0.5rem 0;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        .items-table th.cant { text-align: center; }
+        .items-table th.precio { text-align: right; }
+        .items-table th.subtotal { text-align: right; }
+        .items-table td {
+            padding: 0.6rem 0.5rem 0.6rem 0;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 0.85rem;
+        }
+        .items-table td.cant { text-align: center; color: #888; }
+        .items-table td.precio { text-align: right; color: #888; }
+        .items-table td.subtotal { text-align: right; font-weight: 600; }
+        .total-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #d6e8db;
+            padding: 1rem 1.25rem;
+            border-radius: 14px;
+            margin-bottom: 1.5rem;
+        }
+        .total-box .label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .total-box .value {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #333;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #888;
+            border-top: 2px dashed #d6e8db;
+            padding-top: 1rem;
+        }
+        .btn-print {
+            display: block;
+            width: 100%;
+            padding: 0.85rem;
+            background: #99a98f;
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: inherit;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: all 0.2s ease;
+        }
+        .btn-print:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(153,169,143,0.3); }
+        @media print {
+            body { background: #fff; padding: 0; }
+            .factura-container { box-shadow: none; border-radius: 0; padding: 1rem; max-width: 100%; }
+            .btn-print { display: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <div class="factura-container">
+        <div class="header">
+            <h1>Bocado Rápido</h1>
+            <span class="slogan">Donde el gusto toma la delantera</span>
+        </div>
+
+        <div class="factura-num">
+            <h2>FACTURA #{{ factura.id_factura }}</h2>
+            <span>{{ factura.fecha_emision.strftime('%d/%m/%Y %H:%M') if factura.fecha_emision else '' }}</span>
+        </div>
+
+        <div class="info-grid">
+            <div>
+                <div class="label">Mesa</div>
+                <div class="value">{{ factura.numero_mesa }}</div>
+            </div>
+            <div style="text-align: right;">
+                <div class="label">Cliente</div>
+                <div class="value">{{ factura.nombre_cliente }}</div>
+            </div>
+        </div>
+
+        <table class="items-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th class="cant">Cant</th>
+                    <th class="precio">Precio</th>
+                    <th class="subtotal">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set items = factura.get('items', []) %}
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.nombre }}</td>
+                    <td class="cant">{{ item.cantidad }}</td>
+                    <td class="precio">${{ '{:,.0f}'.format(item.precio_unitario) }}</td>
+                    <td class="subtotal">${{ '{:,.0f}'.format(item.subtotal) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="total-box">
+            <span class="label">Total</span>
+            <span class="value">${{ '{:,.0f}'.format(factura.total) }}</span>
+        </div>
+
+        <div class="footer">
+            <p>¡Gracias por visitarnos!</p>
+            <p style="margin-top: 0.25rem;">Bocado Rápido - Todos los derechos reservados</p>
+        </div>
+
+        <button class="btn-print" onclick="window.print()">
+            <i class="fa-solid fa-print"></i> Imprimir Factura
+        </button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            setTimeout(function() { window.print(); }, 500);
+        };
+    </script>
+</body>
+</html>

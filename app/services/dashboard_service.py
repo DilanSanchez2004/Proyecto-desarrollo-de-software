@@ -3,6 +3,7 @@ from app.repositories.dashboard_repository import (
     contar_usuarios, contar_categorias,
     obtener_ultimos_pedidos, ingresos_hoy
 )
+from app.repositories.factura_repository import contar_facturas_hoy, contar_facturas_totales
 
 def obtener_resumen():
     return {
@@ -13,4 +14,6 @@ def obtener_resumen():
         "categorias": contar_categorias(),
         "ultimos_pedidos": obtener_ultimos_pedidos(),
         "ingresos_hoy": ingresos_hoy(),
+        "facturas_hoy": contar_facturas_hoy(),
+        "facturas_totales": contar_facturas_totales(),
     }

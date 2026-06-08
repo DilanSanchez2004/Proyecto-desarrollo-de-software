@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, jsonify
 from app.services import mesa_service
 from app.repositories.pedido_repository import obtener_pedidos_por_mesa, entregar_pedido
+from app.repositories.factura_repository import generar_factura
 
 barra_bp = Blueprint("barra", __name__)
 
@@ -19,5 +20,6 @@ def entregar(id_pedido):
 
 @barra_bp.route("/barra/mesa/<int:id_mesa>/liberar", methods=["POST"])
 def liberar_mesa(id_mesa):
+    id_factura = generar_factura(id_mesa)
     mesa_service.liberar_mesa(id_mesa)
-    return jsonify({"ok": True})
+    return jsonify({"ok": True, "id_factura": id_factura})

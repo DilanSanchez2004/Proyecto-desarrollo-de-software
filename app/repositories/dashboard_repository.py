@@ -19,7 +19,6 @@ def contar_pedidos():
             cur.execute("""
                 SELECT
                     COALESCE(SUM(CASE WHEN estado = 'pendiente' THEN 1 ELSE 0 END), 0) AS pendientes,
-                    COALESCE(SUM(CASE WHEN estado = 'en preparacion' THEN 1 ELSE 0 END), 0) AS en_preparacion,
                     COALESCE(SUM(CASE WHEN estado = 'entregado' THEN 1 ELSE 0 END), 0) AS entregados
                 FROM pedidos
                 WHERE fecha::date = CURRENT_DATE

@@ -25,7 +25,7 @@ def obtener_pedidos_por_mesa():
                 JOIN detalle_pedido dp ON p.id_pedido = dp.id_pedido
                 JOIN productos pr ON dp.id_producto = pr.id_producto
                 LEFT JOIN clientes_mesa cm ON p.id_cliente_mesa = cm.id_cliente_mesa
-                WHERE p.estado IN ('pendiente', 'en preparacion')
+                WHERE p.estado = 'pendiente'
                 GROUP BY p.id_pedido, cm.nombre
                 ORDER BY p.fecha DESC
             """)
