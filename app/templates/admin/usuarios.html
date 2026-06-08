@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - Usuarios</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #99a98f;
+            --primary-light: #d6e8db;
+            --bg: #f5f7f5;
+            --card-bg: #ffffff;
+            --text: #444;
+            --text-muted: #888;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --font: 'Poppins', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+
+        main {
+            flex: 1;
+            max-width: 1400px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1024px) { main { grid-template-columns: 1fr; } }
+
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            height: fit-content;
+        }
+
+        .panel-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+            color: #333;
+        }
+
+        .form-group { margin-bottom: 1.25rem; }
+
+        .form-label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .form-input {
+            width: 100%;
+            background-color: var(--bg);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: var(--card-bg);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: 100%;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0.85rem 1.25rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(153, 169, 143, 0.3);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            width: auto;
+            font-size: 0.8rem;
+        }
+
+        .btn-danger { background-color: var(--danger); }
+
+        .usuarios-table { width: 100%; border-collapse: collapse; }
+
+        .usuarios-table th {
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.75rem 1rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .usuarios-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.9rem;
+            vertical-align: middle;
+        }
+
+        .usuarios-table tr:hover { background-color: #fafcfa; }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 0.7rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        .badge-admin {
+            background-color: #ede9fe;
+            color: #5b21b6;
+            border: 1px solid #ddd6fe;
+        }
+
+        .badge-you {
+            background-color: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .flashes {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .flash {
+            padding: 0.75rem 1.1rem;
+            border-radius: 10px;
+            margin-bottom: 0.75rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .flash-success { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .flash-danger { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 4rem 0;
+        }
+
+        .empty-state i { font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.5; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="{{ url_for('dashboard.admin_dashboard') }}" class="logo">
+                <i class="fa-solid fa-utensils"></i> Bocado Rápido Admin
+            </a>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard.admin_dashboard') }}" class="nav-link">Dashboard</a>
+                <a href="{{ url_for('mesa.admin_mesas') }}" class="nav-link">Mesas</a>
+                <a href="{{ url_for('producto.admin_productos') }}" class="nav-link">Productos</a>
+                <a href="{{ url_for('usuario.admin_usuarios') }}" class="nav-link active">Usuarios</a>
+                <a href="/barra/pedidos" class="nav-link">Barra</a>
+                {% if session.get('nombre_usuario') %}
+                <span style="color: var(--text-muted); font-size: 0.85rem;">
+                    <i class="fa-solid fa-user"></i> {{ session['nombre_usuario'] }}
+                </span>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link" style="color: var(--danger);">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="panel">
+            <h2 class="panel-title">
+                <i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Nuevo Administrador
+            </h2>
+
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <ul class="flashes">
+                        {% for category, message in messages %}
+                            <li class="flash flash-{{ category }}"><i class="fa-solid fa-circle-info"></i> {{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+            <form action="{{ url_for('usuario.admin_crear_usuario') }}" method="POST">
+                <div class="form-group">
+                    <label for="nombre" class="form-label">Nombre Completo</label>
+                    <input type="text" id="nombre" name="nombre" class="form-input" placeholder="Ej. Admin Principal" required>
+                </div>
+                <div class="form-group">
+                    <label for="correo" class="form-label">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" class="form-input" placeholder="admin@ejemplo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="contrasena" class="form-label">Contraseña</label>
+                    <input type="password" id="contrasena" name="contrasena" class="form-input" placeholder="Mínimo 6 caracteres" minlength="6" required>
+                </div>
+                <button type="submit" class="btn">
+                    <i class="fa-solid fa-plus"></i> Crear Administrador
+                </button>
+            </form>
+        </div>
+
+        <div class="panel">
+            <h2 class="panel-title">
+                <i class="fa-solid fa-users" style="color: var(--primary);"></i> Administradores
+            </h2>
+
+            {% if usuarios %}
+            <table class="usuarios-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Rol</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios %}
+                    <tr>
+                        <td>
+                            <div class="user-avatar">{{ u.nombre[:1] | upper }}</div>
+                        </td>
+                        <td>
+                            <strong>{{ u.nombre }}</strong>
+                            {% if u.id_usuario == session.get('id_usuario') %}
+                            <span class="badge badge-you">Tú</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ u.correo }}</td>
+                        <td><span class="badge badge-admin">{{ u.rol_nombre }}</span></td>
+                        <td>
+                            {% if u.id_usuario != session.get('id_usuario') %}
+                            <form action="{{ url_for('usuario.admin_eliminar_usuario', id_usuario=u.id_usuario) }}" method="POST" onsubmit="return confirm('¿Eliminar a {{ u.nombre }}?')">
+                                <button type="submit" class="btn btn-sm btn-danger"><i class="fa-solid fa-trash-can"></i></button>
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div class="empty-state">
+                <i class="fa-solid fa-users-slash"></i>
+                <p style="font-size: 1.1rem; font-weight: 500;">No hay administradores</p>
+                <p style="font-size: 0.9rem; margin-top: 0.5rem;">Crea el primer administrador con el formulario.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

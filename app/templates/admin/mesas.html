@@ -431,9 +431,20 @@
                 <i class="fa-solid fa-utensils"></i> Bocado Rápido Admin
             </a>
             <nav class="nav-links">
+                <a href="{{ url_for('dashboard.admin_dashboard') }}" class="nav-link">Dashboard</a>
                 <a href="/admin/mesas" class="nav-link active">Mesas</a>
-                <a href="/barra/pedidos" class="nav-link">Barra Pedidos</a>
-                <a href="/menu" class="nav-link">Ir al Menú</a>
+                <a href="{{ url_for('producto.admin_productos') }}" class="nav-link">Productos</a>
+                <a href="{{ url_for('usuario.admin_usuarios') }}" class="nav-link">Usuarios</a>
+                <a href="/barra/pedidos" class="nav-link">Barra</a>
+                <a href="/menu" class="nav-link">Menú</a>
+                {% if session.get('nombre_usuario') %}
+                <span style="color: var(--text-muted); font-size: 0.85rem; margin-left: 1rem;">
+                    <i class="fa-solid fa-user"></i> {{ session['nombre_usuario'] }}
+                </span>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link" style="color: var(--danger);">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                {% endif %}
             </nav>
         </div>
     </header>

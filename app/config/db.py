@@ -1,4 +1,8 @@
+import os
 import psycopg2
+
+
+os.environ.setdefault("PGCLIENTENCODING", "UTF8")
 
 def get_connection():
     conn = psycopg2.connect(
@@ -7,7 +11,7 @@ def get_connection():
         dbname="Desarrollo",
         user="postgres",
         password="josue"
-        
+
         # host="localhost",
         # port=5432,
         # dbname="bocado",

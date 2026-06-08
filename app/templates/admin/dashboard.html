@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Bocado Rápido Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <style>
+        :root {
+            --primary: #99a98f;
+            --primary-light: #d6e8db;
+            --bg: #f5f7f5;
+            --card-bg: #ffffff;
+            --text: #444;
+            --text-muted: #888;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --font: 'Poppins', sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font);
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active { color: var(--primary); }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            transition: all 0.25s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .stat-icon-green { background-color: #d1fae5; color: #065f46; }
+        .stat-icon-blue { background-color: #dbeafe; color: #1e40af; }
+        .stat-icon-orange { background-color: #fef3c7; color: #92400e; }
+        .stat-icon-purple { background-color: #ede9fe; color: #5b21b6; }
+        .stat-icon-red { background-color: #fee2e2; color: #991b1b; }
+        .stat-icon-teal { background-color: #ccfbf1; color: #115e59; }
+
+        .stat-info { flex: 1; }
+
+        .stat-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-number {
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #333;
+            line-height: 1.2;
+        }
+
+        .stat-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .stat-sub strong { color: var(--text); }
+
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .bottom-grid { grid-template-columns: 1fr; }
+        }
+
+        .panel {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+
+        .panel-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.85rem;
+            color: #333;
+        }
+
+        .pedidos-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pedidos-table th {
+            text-align: left;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.6rem 0.75rem;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .pedidos-table td {
+            padding: 0.6rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .badge-pendiente { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+        .badge-en-preparacion { background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe; }
+        .badge-entregado { background-color: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+
+        .quick-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .quick-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            text-decoration: none;
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+
+        .quick-link:hover {
+            border-color: var(--primary);
+            background-color: #fafcfa;
+            transform: translateX(4px);
+        }
+
+        .quick-link-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .quick-link-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .quick-link-info p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="{{ url_for('dashboard.admin_dashboard') }}" class="logo">
+                <i class="fa-solid fa-utensils"></i> Bocado Rápido Admin
+            </a>
+            <nav class="nav-links">
+                <a href="{{ url_for('dashboard.admin_dashboard') }}" class="nav-link active">Dashboard</a>
+                <a href="{{ url_for('mesa.admin_mesas') }}" class="nav-link">Mesas</a>
+                <a href="{{ url_for('producto.admin_productos') }}" class="nav-link">Productos</a>
+                <a href="{{ url_for('usuario.admin_usuarios') }}" class="nav-link">Usuarios</a>
+                <a href="/barra/pedidos" class="nav-link">Barra</a>
+                {% if session.get('nombre_usuario') %}
+                <span style="color: var(--text-muted); font-size: 0.85rem;">
+                    <i class="fa-solid fa-user"></i> {{ session['nombre_usuario'] }}
+                </span>
+                <a href="{{ url_for('auth.logout') }}" class="nav-link" style="color: var(--danger);">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title">
+            <i class="fa-solid fa-gauge-high" style="color: var(--primary);"></i> Dashboard
+        </h1>
+
+        <div class="cards-grid">
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-green"><i class="fa-solid fa-chair"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Mesas</div>
+                    <div class="stat-number">{{ resumen.mesas.total }}</div>
+                    <div class="stat-sub">
+                        <strong style="color: var(--success);">{{ resumen.mesas.libres }}</strong> libres &middot;
+                        <strong style="color: var(--danger);">{{ resumen.mesas.ocupadas }}</strong> ocupadas
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-orange"><i class="fa-solid fa-clock"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Pedidos Pendientes</div>
+                    <div class="stat-number">{{ resumen.pedidos_hoy.pendientes }}</div>
+                    <div class="stat-sub">Hoy</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-blue"><i class="fa-solid fa-fire"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">En Preparación</div>
+                    <div class="stat-number">{{ resumen.pedidos_hoy.en_preparacion }}</div>
+                    <div class="stat-sub">Hoy</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-teal"><i class="fa-solid fa-check"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Entregados Hoy</div>
+                    <div class="stat-number">{{ resumen.pedidos_hoy.entregados }}</div>
+                    <div class="stat-sub">
+                        Ingresos: <strong>${{ '{:,.0f}'.format(resumen.ingresos_hoy.total) }}</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-purple"><i class="fa-solid fa-box"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Productos</div>
+                    <div class="stat-number">{{ resumen.productos.total }}</div>
+                    <div class="stat-sub">
+                        <strong style="color: var(--success);">{{ resumen.productos.disponibles }}</strong> disponibles &middot;
+                        <strong style="color: var(--danger);">{{ resumen.productos.no_disponibles }}</strong> agotados
+                    </div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-green"><i class="fa-solid fa-tags"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Categorías</div>
+                    <div class="stat-number">{{ resumen.categorias.total }}</div>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon stat-icon-red"><i class="fa-solid fa-user-shield"></i></div>
+                <div class="stat-info">
+                    <div class="stat-label">Administradores</div>
+                    <div class="stat-number">{{ resumen.usuarios.total }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="panel">
+                <h2 class="panel-title">
+                    <i class="fa-solid fa-receipt" style="color: var(--primary);"></i> Últimos Pedidos
+                </h2>
+                {% if resumen.ultimos_pedidos %}
+                <table class="pedidos-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Mesa</th>
+                            <th>Cliente</th>
+                            <th>Estado</th>
+                            <th>Hora</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in resumen.ultimos_pedidos %}
+                        <tr>
+                            <td>{{ p.id_pedido }}</td>
+                            <td>Mesa {{ p.numero_mesa }}</td>
+                            <td>{{ p.cliente }}</td>
+                            <td><span class="badge badge-{{ p.estado | replace(' ', '-') }}">{{ p.estado }}</span></td>
+                            <td>{{ p.fecha.strftime('%H:%M') if p.fecha else '' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-state">
+                    <i class="fa-solid fa-receipt" style="font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.5;"></i>
+                    <p>No hay pedidos aún</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="panel">
+                <h2 class="panel-title">
+                    <i class="fa-solid fa-link" style="color: var(--primary);"></i> Acceso Rápido
+                </h2>
+                <div class="quick-links">
+                    <a href="{{ url_for('mesa.admin_mesas') }}" class="quick-link">
+                        <div class="quick-link-icon stat-icon-green"><i class="fa-solid fa-chair"></i></div>
+                        <div class="quick-link-info">
+                            <h4>Gestionar Mesas</h4>
+                            <p>Crear, eliminar y generar códigos QR</p>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('producto.admin_productos') }}" class="quick-link">
+                        <div class="quick-link-icon stat-icon-purple"><i class="fa-solid fa-box"></i></div>
+                        <div class="quick-link-info">
+                            <h4>Gestionar Productos</h4>
+                            <p>Agregar, editar y controlar disponibilidad</p>
+                        </div>
+                    </a>
+                    <a href="/barra/pedidos" class="quick-link">
+                        <div class="quick-link-icon stat-icon-orange"><i class="fa-solid fa-martini-glass"></i></div>
+                        <div class="quick-link-info">
+                            <h4>Barra de Pedidos</h4>
+                            <p>Ver y entregar pedidos pendientes</p>
+                        </div>
+                    </a>
+                    <a href="{{ url_for('usuario.admin_usuarios') }}" class="quick-link">
+                        <div class="quick-link-icon stat-icon-red"><i class="fa-solid fa-user-shield"></i></div>
+                        <div class="quick-link-info">
+                            <h4>Gestionar Usuarios</h4>
+                            <p>Administrar acceso al panel</p>
+                        </div>
+                    </a>
+                    <a href="/menu" class="quick-link">
+                        <div class="quick-link-icon stat-icon-teal"><i class="fa-solid fa-utensils"></i></div>
+                        <div class="quick-link-info">
+                            <h4>Ver Menú</h4>
+                            <p>Visualizar el menú como cliente</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

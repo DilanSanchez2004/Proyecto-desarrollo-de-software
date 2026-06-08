@@ -70,10 +70,13 @@ def registrar_cliente_mesa(nombre, id_mesa):
 
 def eliminar_mesa(id_mesa):
     """
-    Elimina una mesa por su ID.
+    Elimina una mesa por su ID, incluyendo sus referencias.
     """
     with get_connection() as conn:
         with conn.cursor() as cur:
+            cur.execute("DELETE FROM detalle_pedido WHERE id_pedido IN (SELECT id_pedido FROM pedidos WHERE id_mesa = %s)", (id_mesa,))
+            cur.execute("DELETE FROM pedidos WHERE id_mesa = %s", (id_mesa,))
+            cur.execute("DELETE FROM clientes_mesa WHERE id_mesa = %s", (id_mesa,))
             cur.execute("DELETE FROM mesas WHERE id_mesa = %s", (id_mesa,))
             deleted = cur.rowcount
         conn.commit()

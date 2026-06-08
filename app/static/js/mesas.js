@@ -3,19 +3,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const modalTitle = document.getElementById('modalTitle');
     const qrContainer = document.getElementById('qrCodeContainer');
     const printBtn = document.getElementById('printQrBtn');
-    const closeBtn = document.querySelector('.modal-close');
-
     let currentQrCode = null;
     let currentMesaNum = '';
 
-    // Cerrar modal
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
+    // Cerrar modal (todos los botones con clase .modal-close)
+    document.querySelectorAll('.modal-close').forEach(btn => {
+        btn.addEventListener('click', () => {
             modal.style.display = 'none';
             if (qrContainer) qrContainer.innerHTML = '';
             currentQrCode = null;
         });
-    }
+    });
 
     window.addEventListener('click', (e) => {
         if (e.target === modal) {
@@ -58,12 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // Lógica para imprimir el QR
     if (printBtn) {
         printBtn.addEventListener('click', () => {
-            if (!qrContainer || !qrContainer.querySelector('img')) {
+            if (!qrContainer) {
                 alert('El código QR no se ha generado por completo.');
                 return;
             }
 
-            const imgSrc = qrContainer.querySelector('img').src;
+            const canvas = qrContainer.querySelector('canvas');
+            const img = qrContainer.querySelector('img');
+            const imgSrc = canvas ? canvas.toDataURL('image/png') : (img ? img.src : null);
+
+            if (!imgSrc) {
+                alert('El código QR no se ha generado por completo.');
+                return;
+            }
 
             // Abrir una ventana nueva para imprimir el QR de manera limpia
             const printWindow = window.open('', '_blank', 'width=600,height=600');
