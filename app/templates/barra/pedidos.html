@@ -21,8 +21,17 @@
         </div>
         <div class="derecha">
             <ul>
-                <li><a href="{{ url_for('mesa.admin_mesas') }}"><i class="fa-solid fa-chair"></i> Admin Mesas</a></li>
+                <li><a href="{{ url_for('dashboard.admin_dashboard') }}"><i class="fa-solid fa-gauge-high"></i> Dashboard</a></li>
+                <li><a href="{{ url_for('mesa.admin_mesas') }}"><i class="fa-solid fa-chair"></i> Mesas</a></li>
+                <li><a href="{{ url_for('producto.admin_productos') }}"><i class="fa-solid fa-box"></i> Productos</a></li>
+                <li><a href="{{ url_for('usuario.admin_usuarios') }}"><i class="fa-solid fa-user-shield"></i> Usuarios</a></li>
                 <li><a href="{{ url_for('producto.menu') }}"><i class="fa-solid fa-utensils"></i> Menú</a></li>
+                {% if session.get('nombre_usuario') %}
+                <li style="color: var(--text-muted); font-size: 0.85rem;">
+                    <i class="fa-solid fa-user"></i> {{ session['nombre_usuario'] }}
+                </li>
+                <li><a href="{{ url_for('auth.logout') }}" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+                {% endif %}
             </ul>
         </div>
     </nav>

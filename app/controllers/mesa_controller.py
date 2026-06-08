@@ -1,9 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, jsonify
 from app.services import mesa_service
+from app.controllers.auth_controller import admin_required
 
 mesa_bp = Blueprint("mesa", __name__)
 
 @mesa_bp.route("/admin/mesas")
+@admin_required
 def admin_mesas():
     """
     Panel de administración para listar mesas y generar códigos QR.
@@ -12,6 +14,7 @@ def admin_mesas():
     return render_template("admin/mesas.html", mesas=mesas)
 
 @mesa_bp.route("/admin/mesas/crear", methods=["POST"])
+@admin_required
 def crear_mesa():
     """
     Registrar una nueva mesa en el sistema.
@@ -65,6 +68,7 @@ def registrar_cliente(id_mesa):
 
 
 @mesa_bp.route("/admin/mesas/<int:id_mesa>/eliminar", methods=["POST"])
+@admin_required
 def eliminar_mesa(id_mesa):
     """
     Elimina una mesa del sistema.
